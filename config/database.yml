@@ -8,3 +8,14 @@ development:
    username: root
    password: asa@manuh9
    database: test_app
+
+test:
+   adapter: postgresql
+   encoding: unicode
+   pool: 5
+   timeout: 5000
+   host: localhost
+   port: 5432
+   username: root
+   password: asa@manuh9
+   database: test_app
