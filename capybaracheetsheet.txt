@@ -1,0 +1,133 @@
+Navigating
+
+visit "/projects"
+visit post_comments_path(post)
+Clicking links and buttons
+
+click_link "id-of-link"
+click_link "Link Text"
+click_button "Save"
+click "Link Text" # Click either a link or a button
+click "Button Value"
+Interacting with forms
+
+fill_in "First Name", with: "Alejandro"
+choose "A Radio Button"
+check "A Checkbox"
+uncheck "A Checkbox"
+attach_file "Image", "/path/to/image.jpg"
+attach_file "upload_btn_id", Rails.root + "spec/fixtures/test_upload.pdf"
+select "Option", from: "Select Box"
+Scoping
+
+within("li#employee") do
+  fill_in "Name", with: "Alejandro"
+end
+within_fieldset("Employee") do
+  fill_in "Name", with: "Alejandro"
+end
+within_table("Employee") do
+  fill_in "Name", with: "Alejandro"
+end
+within(:xpath, "//li[@id="employee"]") do
+  fill_in "Name", with: "Alejandro"
+end
+within find("tr", text: @invited_user.email) do
+  click_link "Delete"
+end
+Querying
+
+page.has_xpath? "//table/tr"
+page.has_no_xpath?
+page.has_css? "table tr.foo"
+page.has_no_css?
+page.has_content? "foo"
+page.has_no_content?
+page.has_title? "Page Title"
+page.has_link?
+page.has_no_link?
+page.has_button? "Update"
+page.has_no_button?
+page.has_field?
+page.has_no_field?
+page.has_checked_field?
+page.has_unchecked_field?
+page.has_table?
+page.has_no_table?
+page.has_select?
+page.has_no_select?
+
+# Note: Capybara defines the has_*? methods, whereas the capybara rspec matchers
+# define the have_*? methods. The has_*? are on page, whereas the have_*? are matchers.
+# For example:
+expect(page.has_content? "Content").to be true
+# ==
+expect(page).to have_content? "Content"
+Finding
+
+# By default capybara is set to use css as the default selector
+# Capybara.default_selector = :css
+# Which means you don't need to specify the locator type if using css
+find("<css selector>") # == find(:css, "<css selector>")
+find_all("<css selector>") # can also use just all()
+first(:link, "Agree").click # to click the first of several
+first("<css selector>").click # to find first by css
+
+# If xpath is needed
+find(:xpath, "<xpath selector")
+
+find_field("First Name").value
+find_link("Hello").visible?
+find_button("Send").click
+find_all("a").each { |a| a[:href] }
+
+# locate vs find
+# locate: waits for element to appear on page (AJAX), raises an error if it's not found.
+# find: does not wait for element to appear, returns nil.
+Scripting
+
+result = page.evaluate_script("alert('hello');");
+Debugging
+
+save_page
+save_and_open_page # Requires the launchy gem
+save_screenshot("screenshot.png")
+save_and_open_screenshot
+Asynchronous JavaScript
+
+# ...
+Drivers
+
+By default capybara uses the rack-test driver, which does not allow for js running, or screenshots. Using capybara-webkit as a driver allows for screenshots, but logging in with Devise becomes tricky because of transactions. (?? add more info as you figure it out.) There is also the selenium web driver, which also allows for js and screenshots, but has the same Devise issue. The selenium web driver brings up the test suite in a browser for a visual walkthrough of the suite. Also, it seems that the Capybara element selectors are a bit different between capybara-webkit/selenium and rack-test, which makes it hard to move back and forth between them.
+
+Page methods (Capybara::Session)
+
+NODE_METHODS = [
+  :all, :first, :attach_file, :text, :check, :choose,
+  :click_link_or_button, :click_button, :click_link, :field_labeled,
+  :fill_in, :find, :find_all, :find_button, :find_by_id, :find_field, :find_link,
+  :has_content?, :has_text?, :has_css?, :has_no_content?, :has_no_text?,
+  :has_no_css?, :has_no_xpath?, :resolve, :has_xpath?, :select, :uncheck,
+  :has_link?, :has_no_link?, :has_button?, :has_no_button?, :has_field?,
+  :has_no_field?, :has_checked_field?, :has_unchecked_field?,
+  :has_no_table?, :has_table?, :unselect, :has_select?, :has_no_select?,
+  :has_selector?, :has_no_selector?, :click_on, :has_no_checked_field?,
+  :has_no_unchecked_field?, :query, :assert_selector, :assert_no_selector,
+  :refute_selector, :assert_text, :assert_no_text
+]
+
+# This constant is part of a private API. You should avoid using this constant if possible, as it may be removed or be changed in the future.
+DOCUMENT_METHODS = [ :title, :assert_title, :assert_no_title, :has_title?, :has_no_title? ]
+
+SESSION_METHODS = [
+  :body, :html, :source, :current_url, :current_host, :current_path,
+  :execute_script, :evaluate_script, :visit, :go_back, :go_forward,
+  :within, :within_fieldset, :within_table, :within_frame, :current_window,
+  :windows, :open_new_window, :switch_to_window, :within_window, :window_opened_by,
+  :save_page, :save_and_open_page, :save_screenshot,
+  :save_and_open_screenshot, :reset_session!, :response_headers,
+  :status_code, :current_scope,
+  :assert_current_path, :assert_no_current_path, :has_current_path?, :has_no_current_path?
+]
+
+MODAL_METHODS = [ :accept_alert, :accept_confirm, :dismiss_confirm, :accept_prompt, :dismiss_prompt ]
