@@ -5,8 +5,8 @@ development:
    timeout: 5000
    host: localhost
    port: 5432
-   username: root
-   password: asa@manuh9
+   username: postgres
+   password: postgres
    database: test_app
 
 test:
@@ -16,6 +16,6 @@ test:
    timeout: 5000
    host: localhost
    port: 5432
-   username: root
-   password: asa@manuh9
+   username: postgres
+   password: postgres
    database: test_app
